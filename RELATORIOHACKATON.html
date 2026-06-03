@@ -6,25 +6,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>RELATORIOHACKATON</title>
   <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --green-dark: #1b5e20;
+  --green-mid: #2e7d32;
+  --green-light: #4caf50;
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --text-primary: #1a2332;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --bg-primary: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 mark {
   background-color: transparent;
   color: inherit;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f4f6f4;
-  color: #333333;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 50%, #e0f2f1 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
 }
 
 body {
   margin: 0 auto;
-  max-width: 960px;
-  padding: 0 40px 60px 40px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-  border-radius: 0 0 12px 12px;
+  max-width: 980px;
+  padding: 0 40px 80px 40px;
+  background-color: var(--bg-primary);
+  box-shadow: 0 0 60px rgba(27, 94, 32, 0.1), 0 20px 60px rgba(0,0,0,0.08);
+  border-radius: 0 0 20px 20px;
+  position: relative;
+}
+
+/* Reading Progress Bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1b5e20, #4caf50, #76c442);
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
 }
 
 /* Sticky Nav Bar */
@@ -34,11 +73,12 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 2px solid #e8ede8;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-  margin: 0 -40px 40px -40px;
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(46, 125, 50, 0.15);
+  box-shadow: 0 2px 20px rgba(27, 94, 32, 0.08);
+  margin: 0 -40px 0 -40px;
   padding: 0 20px;
 }
 
@@ -52,7 +92,9 @@ body {
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  gap: 2px;
 }
+
 .nav-bar::-webkit-scrollbar {
   display: none;
 }
@@ -61,18 +103,40 @@ body {
   position: relative;
   display: inline-block;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-link {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 10px 8px 10px;
+  padding: 14px 10px 10px 10px;
   color: #556b2f;
   text-decoration: none;
-  font-size: 11px;
-  font-weight: bold;
-  transition: all 0.3s ease;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  transition: var(--transition);
+  border-radius: 6px 6px 0 0;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 70%;
+  height: 2px;
+  background: linear-gradient(90deg, #1b5e20, #4caf50);
+  border-radius: 2px 2px 0 0;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 .nav-link svg {
@@ -81,7 +145,8 @@ body {
 }
 
 .nav-link:hover {
-  color: #2e7d32;
+  color: #1b5e20;
+  background-color: rgba(220, 237, 200, 0.3);
 }
 
 .nav-link:hover svg {
@@ -91,132 +156,265 @@ body {
 .nav-item.active .nav-link {
   color: #1b5e20;
   background-color: rgba(220, 237, 200, 0.2);
-  border-bottom: 2px solid #1b5e20;
+}
+
+.nav-item.active .nav-link::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 /* Dropdown styling */
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 50%;
   transform: translateX(-50%);
   background-color: #ffffff;
-  min-width: 180px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  padding: 8px 0;
+  min-width: 200px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(27,94,32,0.08);
+  border-radius: var(--radius-md);
+  padding: 6px;
   z-index: 1001;
-  border: 1px solid #e8ede8;
+  border: 1px solid rgba(46, 125, 50, 0.12);
 }
 
 .dropdown-content a {
-  color: #333333;
-  padding: 8px 16px;
+  color: var(--text-secondary);
+  padding: 9px 14px;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 12px;
+  font-weight: 500;
   text-align: left;
-  font-weight: normal;
-  transition: background 0.2s ease;
+  transition: var(--transition);
+  border-radius: var(--radius-sm);
+  gap: 6px;
+  border-bottom: none;
+}
+
+.dropdown-content a::before {
+  content: '›';
+  color: #4caf50;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .dropdown-content a:hover {
-  background-color: #f1f8e9;
-  color: #2e7d32;
+  background-color: var(--green-50);
+  color: #1b5e20;
+  padding-left: 18px;
 }
 
 .nav-item.dropdown:hover .dropdown-content {
   display: block;
+  animation: dropdownFade 0.2s ease;
 }
 
-/* Offsets for anchor scrolling to account for fixed header */
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Headings */
 h1, h2, h3 {
-  scroll-margin-top: 80px;
-  color: #1b5e20;
+  scroll-margin-top: 90px;
+  color: var(--green-dark);
 }
 
 h1 {
-  border-bottom: 2px solid #e8f5e9;
-  padding-bottom: 8px;
-  margin-top: 1.8em;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.65rem;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-top: 2.5em;
+  padding-top: 0.5em;
+  position: relative;
+  line-height: 1.4;
+}
+
+h1::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #1b5e20, #66bb6a);
+  border-radius: 2px;
+  margin-top: 10px;
+  margin-bottom: 18px;
 }
 
 h2 {
-  color: #2e7d32;
-  margin-top: 1.5em;
+  color: var(--green-mid);
+  margin-top: 1.8em;
+  font-size: 1.15rem;
+  font-weight: 600;
 }
 
-/* Layout improvements */
+h3 {
+  font-size: 1.05rem;
+  color: #388e3c;
+}
+
+/* Layout */
 p {
-  line-height: 1.6;
+  line-height: 1.8;
   font-size: 15px;
-  color: #37474f;
+  color: var(--text-secondary);
   text-align: justify;
 }
 
+ul, ol {
+  padding-left: 1.5em;
+}
+
+li {
+  line-height: 1.8;
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+li > p {
+  margin: 0;
+}
+
+strong {
+  color: #1b5e20;
+  font-weight: 600;
+}
+
+a {
+  color: #2e7d32;
+  text-decoration: none;
+  border-bottom: 1px dotted #81c784;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: #1b5e20;
+  border-bottom-style: solid;
+}
+
+/* Table */
 table {
   border-collapse: collapse;
   width: 100%;
   margin: 2em 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid #e0e0e0;
-}
-
-th {
-  background-color: #2e7d32;
-  color: #ffffff;
-  font-weight: bold;
-  padding: 14px 16px;
-  text-align: left;
-  font-size: 14px;
   border: none;
 }
 
+th {
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 13px;
+  border: none;
+  letter-spacing: 0.3px;
+}
+
 td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eeeeee;
-  color: #455a64;
+  padding: 12px 18px;
+  border-bottom: 1px solid #f0f4f0;
+  color: var(--text-secondary);
   font-size: 13.5px;
+  transition: background 0.2s ease;
 }
 
-tr:nth-child(even) {
-  background-color: #f9fbf9;
+tr:last-child td {
+  border-bottom: none;
 }
 
-tr:hover {
-  background-color: #f1f8e9;
+tr:nth-child(even) td {
+  background-color: #fafcfa;
 }
 
-/* Document Header layout */
+tr:hover td {
+  background-color: var(--green-50);
+}
+
+/* Document Header */
 .doc-header {
-  padding: 50px 0 30px 0;
+  padding: 70px 48px 50px 48px;
   text-align: center;
-  border-bottom: 3px double #e8f5e9;
-  margin-bottom: 30px;
+  background: linear-gradient(155deg, #f0fdf4 0%, #dcfce7 50%, #f0f9ff 100%);
+  border-bottom: 1px solid rgba(46, 125, 50, 0.12);
+  margin: 0 -40px 40px -40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.doc-header::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.doc-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(27, 94, 32, 0.07), transparent 70%);
+  pointer-events: none;
 }
 
 .doc-header h1 {
   border: none;
-  font-size: 26px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 27px;
   color: #1b5e20;
-  margin-top: 0;
+  margin: 0;
   line-height: 1.4;
-  font-weight: bold;
+  font-weight: 700;
+  scroll-margin-top: 0;
+}
+
+.doc-header h1::after {
+  margin: 14px auto 0 auto;
+  width: 80px;
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: white;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(27, 94, 32, 0.3);
 }
 
 .doc-metadata {
   font-size: 14px;
-  color: #546e7a;
-  margin-top: 20px;
+  color: var(--text-muted);
+  margin-top: 24px;
   line-height: 1.6;
 }
 
 .doc-metadata p {
   text-align: center;
   margin: 6px 0;
+  font-size: 13.5px;
+  color: #546e7a;
 }
 
 .doc-metadata span {
@@ -224,21 +422,79 @@ tr:hover {
   margin: 0 10px;
 }
 
-/* Mobile optimizations */
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: block;
+  margin: 1.5em auto;
+}
+
+/* Scroll-to-top button */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(27, 94, 32, 0.35);
+  transition: var(--transition);
+  opacity: 0;
+  transform: translateY(20px);
+  z-index: 9998;
+  pointer-events: none;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.45);
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   body {
-    padding: 0 15px 40px 15px;
+    padding: 0 20px 40px 20px;
   }
   .nav-container {
-    margin: 0 -15px 30px -15px;
+    margin: 0 -20px 0 -20px;
+    padding: 0 8px;
+  }
+  .doc-header {
+    padding: 50px 24px 36px 24px;
+    margin: 0 -20px 30px -20px;
   }
   .doc-header h1 {
-    font-size: 20px;
+    font-size: 21px;
   }
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media print {
+  .nav-container, .progress-bar, .scroll-top-btn { display: none !important; }
+  body { box-shadow: none; max-width: 100%; padding: 20px; }
 }
 </style>
 </head>
 <body>
+<div class="progress-bar" id="progressBar"></div>
 
 <div class="nav-container">
   <nav class="nav-bar">
@@ -327,14 +583,15 @@ tr:hover {
 </div>
 
 <div class="doc-header">
+  <div class="badge">Hackathon FIP 606 &middot; 2026</div>
   <h1 id="análise-e-comunicação-do-risco-de-ferrugem-asiática-da-soja-no-estado-de-mato-grosso-safra-20242025">Análise e Comunicação do Risco de Ferrugem Asiática da Soja no Estado de Mato Grosso — Safra 2024/2025</h1>
   <div class="doc-metadata">
-    <p><strong>Hackathon FIP 606</strong> · Análise e Visualização de Dados em Fitopatologia</p>
+    <p>Análise e Visualização de Dados em Fitopatologia</p>
     <p>
       <span><strong>Equipe:</strong> Darlison Conceição Ferreira, Rikelme Matheus dos Santos Relvas, Thalya Furtado Lopes, Vinicius Pereira Cunha</span>
     </p>
     <p>
-      <span><strong>Disciplina:</strong> FIP 606</span> · <span><strong>Data:</strong> 03/06/2026</span>
+      <span><strong>Disciplina:</strong> FIP 606</span> &nbsp;·&nbsp; <span><strong>Data:</strong> 03/06/2026</span>
     </p>
   </div>
 </div>
@@ -910,8 +1167,27 @@ desenvolvimento de estratégias de mitigação. Dessa forma, o dashboard
 ultrapassa a função tradicional de monitoramento fitossanitário e passa
 a atuar como instrumento de apoio à gestão integrada de risco
 agrícola.</p>
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // Reading progress bar
+  const progressBar = document.getElementById("progressBar");
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if (progressBar) progressBar.style.width = progress + "%";
+    if (scrollTopBtn) {
+      if (scrollTop > 400) scrollTopBtn.classList.add("visible");
+      else scrollTopBtn.classList.remove("visible");
+    }
+  });
+
+  // Active nav section observer
   const sections = document.querySelectorAll("h1, h2");
   const navItems = document.querySelectorAll(".nav-item");
 
