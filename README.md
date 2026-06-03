@@ -1,6 +1,6 @@
-# 🌿 Hackathon FIP 606 — Ferrugem do Cafeeiro
+# 🌿 Hackathon FIP 606 — Ferrugem Asiática da Soja
 
-Este repositório contém os arquivos desenvolvidos para o Hackathon da disciplina **FIP 606**, com análise espacial e modelagem da **ferrugem do cafeeiro** (*Hemileia vastatrix*).
+Este repositório contém os arquivos desenvolvidos para o Hackathon da disciplina **FIP 606**, com análise espacial e modelagem da **ferrugem asiática da soja** (*Phakopsora pachyrhizi*).
 
 ## 📂 Conteúdo
 
