@@ -24,5 +24,5 @@ install.packages(c("shiny", "shinydashboard", "leaflet", "sf", "geobr", "ggplot2
 ```
 3. Abra o arquivo `app.R` no RStudio e clique em **Run App**
 
-## 👩‍🎓 Autora
-Thalyafurtado Lopes — FIP 606 / UFV
+## 👩‍🎓 Autores
+Darlison Conceição Ferreira, Rikelme Matheus dos Santos Relvas, Thalya Furtado Lopes, Vinicius Pereira Cunha — FIP 606 / UFV
